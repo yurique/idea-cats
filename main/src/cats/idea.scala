@@ -1,0 +1,5 @@
+package cats
+
+import cats.syntax.IdeaSemigroupalValidatedNelSyntax
+
+object idea extends IdeaSemigroupalValidatedNelSyntax
