@@ -42,17 +42,16 @@ libraryDependencies += "com.github.yurique" % "idea-cats" % "0.0.1"
 #### mill
 
 ```
-import mill._
-interp.repositories() =
-  interp.repositories() ++ Seq(coursier.MavenRepository("https://jitpack.io"))
-
-@
-//...
 object myModule extends ScalaModule {
-// ...
-    def ivyDeps = super.ivyDeps() ++ Seq(
+
+    override def repositories = super.repositories ++ Seq(
+      MavenRepository("https://jitpack.io")
+    )
+    
+    override def ivyDeps = super.ivyDeps() ++ Seq(
         ivy"com.github.yurique::idea-cats:0.0.1"
     )
+    
 }
 ```
 
