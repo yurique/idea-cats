@@ -21,6 +21,11 @@ object main extends ScalaModule with PublishModule {
     pa.payload.map { case (f, n) => cp(f.path, ad / n) }
   }
 
+  object test extends Tests {
+    def testFrameworks = Seq("com.novocode.junit.JUnitFramework")
+    def ivyDeps = Agg(ivy"com.novocode:junit-interface:0.11")
+  }
+
   def pomSettings = PomSettings(
     description = "Some desperate hacks to make idea understand some cats",
     organization = "io.github.yurique",
