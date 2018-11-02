@@ -3,11 +3,8 @@ jdk:
 before_install:
   - sh -c '(echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/mill/releases/download/0.3.2/0.3.2) > ~/mill && chmod +x ~/mill'
 install:
-  - ~/mill -i main.jvm\[2.11.12\].m2
-  - ~/mill -i main.jvm\[2.11.12\].m2
-  - ~/mill -i main.js\[2.12.7\].m2
+  - ~/mill -i main.jvm\[2.12.7\].m2
   - ~/mill -i main.js\[2.12.7\].m2
   - mkdir -p ~/.m2/
   - cp -rv out/main/jvm/2.12.7/m2/dest/ ~/.m2/repository
-  - cp -rv out/main/jvm/2.11.12/m2/dest/ ~/.m2/repository
   - cp -rv out/main/js/2.12.7/m2/dest/ ~/.m2/repository

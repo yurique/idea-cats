@@ -16,7 +16,7 @@ trait CommonModule extends ScalaModule {
 }
 
 trait CommonPublishModule extends CommonModule with PublishModule with CrossScalaModule {
-  def publishVersion = "0.0.3"
+  def publishVersion = "0.0.4"
   def pomSettings = PomSettings(
     description = "Some desperate hacks to make idea understand some cats",
     organization = "io.github.yurique",
@@ -53,7 +53,7 @@ trait IdeaCatsModule extends CommonPublishModule {
 
 object main extends Module {
 
-  object jvm extends Cross[IdeaCatsJvmModule]("2.11.12", "2.12.7")
+  object jvm extends Cross[IdeaCatsJvmModule]("2.12.7")
   class IdeaCatsJvmModule(val crossScalaVersion: String) extends IdeaCatsModule {
   }
 
