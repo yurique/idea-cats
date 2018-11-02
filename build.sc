@@ -16,7 +16,7 @@ trait CommonModule extends ScalaModule {
 }
 
 trait CommonPublishModule extends CommonModule with PublishModule with CrossScalaModule {
-  def publishVersion = "0.0.2"
+  def publishVersion = "0.0.3"
   def pomSettings = PomSettings(
     description = "Some desperate hacks to make idea understand some cats",
     organization = "io.github.yurique",
@@ -39,7 +39,7 @@ trait CommonPublishModule extends CommonModule with PublishModule with CrossScal
 }
 
 trait IdeaCatsModule extends CommonPublishModule {
-  override def artifactName = "upickle"
+  override def artifactName = "idea-cats"
   def millSourcePath = build.millSourcePath / "main"
   override def scalacOptions = super.scalacOptions() ++ Seq(
     "-Ypartial-unification",
@@ -57,8 +57,8 @@ object main extends Module {
   class IdeaCatsJvmModule(val crossScalaVersion: String) extends IdeaCatsModule {
   }
 
-  object js extends Cross[UpickleJsModule]("2.12.7")
-  class UpickleJsModule(val crossScalaVersion: String) extends IdeaCatsModule with ScalaJSModule {
+  object js extends Cross[IdeaCatsJsModule]("2.12.7")
+  class IdeaCatsJsModule(val crossScalaVersion: String) extends IdeaCatsModule with ScalaJSModule {
     override def scalaJSVersion = "0.6.25"
   }
 
