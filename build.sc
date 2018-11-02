@@ -16,10 +16,10 @@ trait CommonModule extends ScalaModule {
 }
 
 trait CommonPublishModule extends CommonModule with PublishModule with CrossScalaModule {
-  def publishVersion = "0.0.4"
+  def publishVersion = "0.0.5"
   def pomSettings = PomSettings(
     description = "Some desperate hacks to make idea understand some cats",
-    organization = "io.github.yurique",
+    organization = "com.github.yurique",
     url = "https://github.com/yurique/idea-cats",
     licenses = Seq(License.`Apache-2.0`),
     versionControl = VersionControl.github("yurique", "idea-cats"),
