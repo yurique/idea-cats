@@ -36,7 +36,7 @@ Please note that IDEA-Cats is a quick and dirty solution :) (which nevertheless 
 #### sbt
 ```
 resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "com.github.yurique" % "idea-cats" % "0.0.1"	
+libraryDependencies += "com.github.yurique" % "idea-cats" % "0.0.2"	
 ```
 
 #### mill
@@ -51,7 +51,7 @@ interp.repositories() =
 object myModule extends ScalaModule {
 // ...
     def ivyDeps = super.ivyDeps() ++ Seq(
-        ivy"com.github.yurique::idea-cats:0.0.1"
+        ivy"com.github.yurique::idea-cats:0.0.2"
     )
 }
 ```
