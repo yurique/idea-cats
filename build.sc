@@ -1,31 +1,22 @@
 import mill._
 import scalalib._
+import scalajslib._
 import publish._
 import ammonite.ops._
 
-object main extends ScalaModule with PublishModule {
+val catsVersion = "1.4.0"
 
-  def scalaVersion = "2.12.7"
-  def publishVersion = "0.0.1"
-  val catsVersion = "1.4.0"
+trait CommonModule extends ScalaModule {
 
-  override def artifactName = "idea-cats"
+  override def sources = T.sources(millSourcePath / "src")
+  override def ivyDeps = super.ivyDeps() ++ Seq(
+    ivy"org.typelevel::cats-core::${catsVersion}"
+  )
 
-  def m2 = T {
-    val pa = publishArtifacts()
-    val wd = T.ctx().dest
-    val ad = pa.meta.group
-      .split("\\.")
-      .foldLeft(wd)((a, b) => a / b) / pa.meta.id / pa.meta.version
-    mkdir(ad)
-    pa.payload.map { case (f, n) => cp(f.path, ad / n) }
-  }
+}
 
-  object test extends Tests {
-    def testFrameworks = Seq("com.novocode.junit.JUnitFramework")
-    def ivyDeps = Agg(ivy"com.novocode:junit-interface:0.11")
-  }
-
+trait CommonPublishModule extends CommonModule with PublishModule with CrossScalaModule {
+  def publishVersion = "0.0.2"
   def pomSettings = PomSettings(
     description = "Some desperate hacks to make idea understand some cats",
     organization = "io.github.yurique",
@@ -36,17 +27,39 @@ object main extends ScalaModule with PublishModule {
       Developer("yurique", "Iurii Malchenko", "https://github.com/yurique")
     )
   )
+  def m2 = T {
+    val pa = publishArtifacts()
+    val wd = T.ctx().dest
+    val ad = pa.meta.group
+      .split("\\.")
+      .foldLeft(wd)((a, b) => a / b) / pa.meta.id / pa.meta.version
+    mkdir(ad)
+    pa.payload.map { case (f, n) => cp(f.path, ad / n) }
+  }
+}
 
+trait IdeaCatsModule extends CommonPublishModule {
+  override def artifactName = "upickle"
+  def millSourcePath = build.millSourcePath / "main"
   override def scalacOptions = super.scalacOptions() ++ Seq(
-    "-target:jvm-1.8",
     "-Ypartial-unification",
     "-language:higherKinds",
-    "-encoding",
-    "utf8"
+    "-unchecked",
+    "-deprecation",
+    "-encoding", "utf8",
+    "-feature"
   )
+}
 
-  override def ivyDeps = super.ivyDeps() ++ Seq(
-    ivy"org.typelevel::cats-core:${catsVersion}"
-  )
+object main extends Module {
+
+  object jvm extends Cross[IdeaCatsJvmModule]("2.11.12", "2.12.7")
+  class IdeaCatsJvmModule(val crossScalaVersion: String) extends IdeaCatsModule {
+  }
+
+  object js extends Cross[UpickleJsModule]("2.12.7")
+  class UpickleJsModule(val crossScalaVersion: String) extends IdeaCatsModule with ScalaJSModule {
+    override def scalaJSVersion = "0.6.25"
+  }
 
 }
